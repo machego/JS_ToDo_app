@@ -6,18 +6,20 @@ const ulTodo = document.getElementById("ul-Todo");
 
 addBtn.addEventListener('click', () => {
     //console.log("click")
-    let input = inputTodo.value
+    let input = inputTodo.value  
     let newTodo = document.createElement("li")
 
+    if(input.length>1){
     newTodo.innerText = input
     ulTodo.appendChild(newTodo)
+} 
 
     // clear input field
     inputTodo.value = ""
 
     // done/ clear button
     let doneBtn = document.createElement('button')
-    doneBtn.innerText = "delete" 
+    doneBtn.innerText = "X" 
     newTodo.appendChild(doneBtn)
     doneBtn.addEventListener('click', () => {
         newTodo.remove()
