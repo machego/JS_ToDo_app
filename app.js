@@ -1,27 +1,48 @@
 "use strict"
 
-const inputTodo = document.getElementById("input-todo");
-const addBtn = document.getElementById("add-btn");
-const ulTodo = document.getElementById("ul-Todo");
+let localArray = []
 
-addBtn.addEventListener('click', () => {
-    //console.log("click")
-    let input = inputTodo.value  
-    let newTodo = document.createElement("li")
+const saveBtn = document.getElementById("save-btn");
+const inputEl = document.getElementById("input-el");
+const ulEl = document.getElementById("ul-el");
 
-    if(input.length>1){
-    newTodo.innerText = input
-    ulTodo.appendChild(newTodo)
+const leadsFromLocalStorage = JSON.parse(localStorage.getItem("localArray"))
+
+
+if (leadsFromLocalStorage) {
+    localArray = leadsFromLocalStorage
+    // clear hole localStorage !!!
+    renderLocalArray()
 } 
+   
 
-    // clear input field
-    inputTodo.value = ""
+function renderLocalArray() {
+    let listItems = ""
+    for(let i= 0; i < localArray.length; i++) {
+        
+        listItems += `
+        <li> 
+        ${localArray[i]} 
+        <button id="clear-btn" onclick="remove(this)">X</button>
+        </li>
+        `  
+    }  
+    ulEl.innerHTML = listItems  
+}
 
-    // done/ clear button
-    let doneBtn = document.createElement('button')
-    doneBtn.innerText = "X" 
-    newTodo.appendChild(doneBtn)
-    doneBtn.addEventListener('click', () => {
-        newTodo.remove()
-    })  
+
+function remove(e) {
+    e.parentElement.remove()
+    // clears whole localStorage !!
+    localStorage.clear()
+ }
+
+ 
+saveBtn.addEventListener('click', () => {
+    if(inputEl.value.length > 1) {
+    localArray.push(inputEl.value)
+    }
+    inputEl.value = ""
+    renderLocalArray()   
+    localStorage.setItem("localArray", JSON.stringify(localArray))
 })
